@@ -141,7 +141,7 @@ header {
 .hero-section {
     padding: 0; /* Remove default padding for full-width hero */
     height: 80vh;
-    background-image: url('img/bgimg.jpeg');
+    background-image: url('bgimg.jpeg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -934,3 +934,4 @@ footer {
         text-align: center;
     }
 }
+
