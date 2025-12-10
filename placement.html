@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Placement Trend (Enhanced UI - Vertical Reviews/Bigger Chart)</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* COLOR PALETTE & VARIABLES */
+        :root{
+            --primary-color: #2563eb; /* Blue */
+            --primary-light: #eff6ff;
+            --secondary-color: #10b981; /* Green */
+            --text-color: #1f2937;
+            --muted-color: #6b7280;
+            --bg-color: #f5f7f9;
+            --card-color: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* BASE STYLES */
+        body{
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            line-height: 1.6;
+        }
+        
+        header{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1{
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        h3{
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .muted{
+            color: var(--muted-color);
+            font-size: 14px;
+        }
+
+        /* CONTAINER/LAYOUT */
+        .container{
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            gap: 30px;
+            /* New Layout: Table full width, Chart/Reviews split below */
+            grid-template-areas:
+                "table-area table-area"
+                "chart-area reviews-area";
+            grid-template-columns: 2fr 1fr; /* Chart takes 2/3, Reviews take 1/3 */
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-areas:
+                    "table-area"
+                    "chart-area"
+                    "reviews-area";
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* CARD STYLE */
+        .card{
+            background: var(--card-color);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* GRID AREAS */
+        #table-section { grid-area: table-area; }
+        #chart-section { grid-area: chart-area; }
+        #reviews-section { grid-area: reviews-area; }
+
+        /* CHART SIZE INCREASED */
+        .chart-wrap{height: 400px;} 
+
+        /* TABLE STYLES (Clean/Striped) */
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td{
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th{
+            background: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        /* Striped rows */
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .avg{
+            background: var(--secondary-color);
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 15px;
+            padding: 5px 8px; /* Padding for the value cell content */
+        }
+        td:last-child {
+            text-align: center;
+        }
+
+        /* REVIEW STYLES (Vertical Stacking is default) */
+        .review{
+            background: var(--card-color);
+            padding: 15px;
+            border: 1px solid #e0e7ea;
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
+            position: relative;
+        }
+        .review::before {
+            content: "\201C"; /* Left double quotation mark */
+            position: absolute;
+            top: 0px;
+            left: 5px;
+            font-size: 40px;
+            color: var(--secondary-color);
+            opacity: 0.3;
+            line-height: 1;
+        }
+        .review-text {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Placement Trend Analysis 📊</h1>
+    <p class="muted">5-Year Department-Wise Average Package Performance</p>
+</header>
+
+<main class="container">
+
+    <section class="card" id="table-section">
+        <h3>Average Packages by Department (LPA)</h3>
+        <div id="table-area"></div>
+    </section>
+
+    <section class="card" id="chart-section">
+        <h3>Overall Average Package Trend</h3>
+        <div class="chart-wrap"><canvas id="avgChart"></canvas></div>
+    </section>
+
+    <section class="card" id="reviews-section">
+        <h3>Student Success Stories ✨</h3>
+        <div id="reviews"></div>
+    </section>
+
+</main>
+
+<script>
+    /* DATA (5 Years) */
+    const data  = [
+        { year: 2024, cse: 14.5, ece: 11.0, mech: 7.5, civil: 6.0, review: "Amazing training sessions helped me crack multiple interviews. - Riya Sharma (CSE)", rating: 5 },
+        { year: 2023, cse: 12.0, ece: 10.5, mech: 6.8, civil: 5.5, review: "Supportive faculty guided us through tough placement rounds. - Rohan Patel (ECE)", rating: 4 },
+        { year: 2022, cse: 11.5, ece: 9.0,  mech: 6.5, civil: 5.0, review: "Mechanical labs and projects helped me get a core job. - Alice Johnson (Mech)", rating: 5 },
+        { year: 2021, cse: 10.0, ece: 8.5,  mech: 6.0, civil: 4.8, review: "Online placement process was smooth and stress-free. - Michael Brown (CSE)", rating: 4 },
+        { year: 2020, cse: 9.0,  ece: 7.5,  mech: 5.5, civil: 4.5, review: "Great support for civil engineering internships and jobs. - Priya Singh (Civil)", rating: 4 }
+    ];
+
+    /* Calculate average package */
+    function avg(row){
+        return ((row.cse + row.ece + row.mech + row.civil) / 4).toFixed(2);
+    }
+
+    /* RENDER TABLE */
+    function renderTable(){
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>CSE (LPA)</th>
+                        <th>ECE (LPA)</th>
+                        <th>MECH (LPA)</th>
+                        <th>CIVIL (LPA)</th>
+                        <th>Overall Avg (LPA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        data.forEach(r=>{
+            html += `
+                <tr>
+                    <td>${r.year}</td>
+                    <td>${r.cse}</td>
+                    <td>${r.ece}</td>
+                    <td>${r.mech}</td>
+                    <td>${r.civil}</td>
+                    <td><span class="avg">${avg(r)}</span></td>
+                </tr>
+            `;
+        });
+        html += `</tbody></table>`;
+        document.getElementById("table-area").innerHTML = html;
+    }
+
+    /* RENDER REVIEWS */
+    function renderReviews(){
+        const box = document.getElementById("reviews");
+        box.innerHTML = data
+            .map(r=>`<div class="review"><span class="review-text">${r.review}</span></div>`)
+            .join('');
+    }
+
+    /* RENDER CHART */
+    function renderChart(){
+        const years = data.map(d=>d.year).reverse(); // Reverse for correct chart order (2020 -> 2024)
+        const averages = data.map(avg).reverse();
+
+        new Chart(document.getElementById('avgChart'),{
+            type:'line',
+            data:{
+                labels: years,
+                datasets:[{
+                    label: 'Average Package (LPA)',
+                    data: averages,
+                    borderColor: "var(--primary-color)",
+                    backgroundColor: "rgba(37, 99, 235, 0.1)", /* Light blue fill */
+                    borderWidth: 3,
+                    pointBackgroundColor: "var(--primary-color)",
+                    pointBorderColor: "var(--card-color)",
+                    pointHoverRadius: 6,
+                    tension: 0.4, /* Smoother line */
+                    fill: true
+                }]
+            },
+            options:{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins:{
+                    legend:{display:false},
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Package (LPA)'
+                        },
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /* INITIALIZE */
+    document.addEventListener("DOMContentLoaded",()=>{
+        renderTable();
+        renderReviews();
+        renderChart();
+    });
+</script>
+
+</body>
+</html>

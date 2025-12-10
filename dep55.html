@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electronics & Communication Engineering Department</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" xintegrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --primary-color: #0077b6; /* Deep Blue/Teal (Kept consistent with original) */
+      --secondary-color: #00b4d8; /* Brighter Blue */
+      --accent-color: #f77f00;   /* Orange/Yellow */
+      --text-dark: #333333;
+      --text-light: #6c757d;
+      --bg-light: #f8f9fa;
+      --bg-white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 3rem 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      color: var(--accent-color);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.5rem;
+      color: var(--bg-light);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 3rem auto;
+    }
+
+    /* --- Collapsible Semester Cards --- */
+    .semester-card {
+      background-color: var(--bg-white);
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    
+    .semester-header {
+      background-color: var(--secondary-color);
+      color: var(--bg-white);
+      padding: 20px 30px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+    
+    .semester-header:hover {
+      background-color: #008fa7;
+    }
+
+    .semester-header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    
+    .semester-header i {
+      transition: transform 0.3s;
+    }
+
+    .semester-content {
+      display: none; /* Controlled by JS */
+      padding: 30px;
+    }
+
+    /* State when open */
+    .semester-header.active i {
+      transform: rotate(180deg);
+    }
+
+    /* --- Content Layout --- */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 40px;
+    }
+
+    .subjects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .subject {
+      background-color: var(--bg-light);
+      padding: 15px;
+      border-left: 4px solid var(--primary-color);
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    
+    .subject:hover {
+      background-color: #e9f5f9;
+    }
+
+    .subject strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+    }
+    
+    .subject span {
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .faculty-list {
+      background-color: var(--bg-light);
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .faculty-list h3 {
+      color: var(--accent-color);
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 5px;
+    }
+
+    .faculty-list ul {
+      list-style-type: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    
+    .faculty-list li {
+      background-color: var(--bg-white);
+      padding: 8px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-weight: 500;
+    }
+
+    /* --- Additional Content Boxes (Placement & Projects) --- */
+    .content-box {
+      background-color: var(--bg-white);
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .content-box h3 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--secondary-color);
+      padding-bottom: 10px;
+    }
+    
+    .placement-info {
+      background-color: #e9f5f9; /* Light blue background */
+    }
+
+    .placement-info p {
+      margin-bottom: 10px;
+    }
+
+    .project-list ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-list li {
+      background-color: var(--bg-light);
+      padding: 10px;
+      border-radius: 4px;
+      border-left: 4px solid var(--accent-color);
+      font-weight: 500;
+    }
+
+    footer {
+      background-color: var(--primary-color);
+      color: var(--bg-white);
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-top: 3rem;
+    }
+    
+    /* --- Responsiveness --- */
+    @media (max-width: 900px) {
+      .container {
+        width: 95%;
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      header p {
+        font-size: 1.2rem;
+      }
+      .semester-header h2 {
+        font-size: 1.5rem;
+      }
+      .faculty-list ul {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Electronics & Communication Engineering (B.E.)</h1>
+    <p>Department of Electronics, Communication & VLSI Systems</p>
+  </header>
+
+  <div class="container">
+    <div class="content-box department-overview">
+      <h3>Department Highlights</h3>
+      <p><i class="fas fa-satellite-dish" style="color: var(--accent-color);"></i> <strong>Focus:</strong> Analog & Digital Electronics, Communication Systems, Signal Processing, VLSI Design, and Embedded Systems.</p>
+      <p><i class="fas fa-microchip" style="color: var(--accent-color);"></i> <strong>Environment:</strong> Strong emphasis on hardware design, simulation, and practical application of communication and signal processing principles.</p>
+      <p><i class="fas fa-wifi" style="color: var(--accent-color);"></i> <strong>Facilities:</strong> Modern laboratories for Digital Signal Processing, VLSI/EDA, Advanced Communication, and Microcontrollers.</p>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 1</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC101:</strong> Basic Electronics Engineering <span>Introduction to semiconductors and electronic components.</span></div>
+            <div class="subject"><strong>MA101:</strong> Mathematics I <span>Calculus and basic algebra.</span></div>
+            <div class="subject"><strong>PH101:</strong> Physics <span>Engineering physics concepts.</span></div>
+            <div class="subject"><strong>EN101:</strong> English Communication <span>Soft skills and technical communication.</span></div>
+            <div class="subject"><strong>CS101:</strong> Basic Computer Programming <span>Introduction to programming.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Smith</li>
+              <li>Prof. Johnson</li>
+              <li>Prof. Williams</li>
+              <li>Prof. Brown</li>
+              <li>Prof. Davis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 2</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EE101:</strong> Basic Electrical Engineering <span>Fundamentals of circuits and electrical quantities.</span></div>
+            <div class="subject"><strong>MA102:</strong> Mathematics II <span>Advanced calculus and differential equations.</span></div>
+            <div class="subject"><strong>CH101:</strong> Chemistry <span>Engineering chemistry basics.</span></div>
+            <div class="subject"><strong>EC102:</strong> Circuit Theory <span>Network theorems and circuit analysis.</span></div>
+            <div class="subject"><strong>ME101:</strong> Basic Mechanical Engineering <span>Fundamentals of mechanical systems.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Miller</li>
+              <li>Prof. Wilson</li>
+              <li>Prof. Moore</li>
+              <li>Prof. Taylor</li>
+              <li>Prof. Anderson</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 3</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC201:</strong> Electronic Devices and Circuits <span>Semiconductor devices and their biasing.</span></div>
+            <div class="subject"><strong>EC202:</strong> Digital Logic Design <span>Logic gates, combinational and sequential circuits.</span></div>
+            <div class="subject"><strong>MA201:</strong> Differential Equations <span>Advanced engineering mathematics.</span></div>
+            <div class="subject"><strong>EC203:</strong> Signals and Systems <span>Continuous and discrete-time signals.</span></div>
+            <div class="subject"><strong>EC204:</strong> Network Analysis <span>Advanced circuit analysis techniques.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Thomas</li>
+              <li>Prof. Jackson</li>
+              <li>Prof. White</li>
+              <li>Prof. Harris</li>
+              <li>Prof. Martin</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 4</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC205:</strong> Analog Circuits <span>Operational amplifiers and linear integrated circuits.</span></div>
+            <div class="subject"><strong>EC206:</strong> Communication Systems I <span>Analog communication fundamentals (AM, FM, PM).</span></div>
+            <div class="subject"><strong>EC207:</strong> Electromagnetic Waves <span>Field theory, transmission lines, and wave propagation.</span></div>
+            <div class="subject"><strong>EC208:</strong> Control Systems <span>Modeling, analysis, and stability of control systems.</span></div>
+            <div class="subject"><strong>MA202:</strong> Numerical Methods <span>Computational methods for engineering.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Thompson</li>
+              <li>Prof. Clark</li>
+              <li>Prof. Lewis</li>
+              <li>Prof. Lee</li>
+              <li>Prof. Walker</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 5</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC301:</strong> Digital Signal Processing <span>Discrete-time signal processing and transform analysis.</span></div>
+            <div class="subject"><strong>EC302:</strong> Microprocessors and Microcontrollers <span>Architecture, programming, and interfacing (8086/ARM).</span></div>
+            <div class="subject"><strong>EC303:</strong> Digital Communication <span>Digital modulation, error control coding, and information theory.</span></div>
+            <div class="subject"><strong>EC304:</strong> VLSI Design <span>MOSFET scaling, CMOS circuits, and IC fabrication basics.</span></div>
+            <div class="subject"><strong>EC305:</strong> Electrical Measurements and Instrumentation <span>Measuring instruments and sensors.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Hall</li>
+              <li>Prof. Allen</li>
+              <li>Prof. Young</li>
+              <li>Prof. Hernandez</li>
+              <li>Prof. King</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 6</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC306:</strong> Wireless Communication <span>Cellular concepts, fading channels, and mobile networks.</span></div>
+            <div class="subject"><strong>EC307:</strong> Antenna and Wave Propagation <span>Antenna types, array analysis, and propagation models.</span></div>
+            <div class="subject"><strong>EC308:</strong> Computer Networks <span>Network layers, protocols (TCP/IP), and security fundamentals.</span></div>
+            <div class="subject"><strong>EC309:</strong> Embedded Systems <span>Real-time operating systems, design, and applications.</span></div>
+            <div class="subject"><strong>EC310:</strong> Microwave Engineering <span>Waveguides, microwave components, and devices.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Wright</li>
+              <li>Prof. Lopez</li>
+              <li>Prof. Hill</li>
+              <li>Prof. Green</li>
+              <li>Prof. Baker</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 7</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC401:</strong> Optical Fiber Communication <span>Light sources, detectors, and fiber link design.</span></div>
+            <div class="subject"><strong>EC402:</strong> Data Compression and Coding <span>Source coding, channel coding, and standards.</span></div>
+            <div class="subject"><strong>EC403:</strong> IoT and Sensor Networks <span>Architecture, protocols, and application of IoT systems.</span></div>
+            <div class="subject"><strong>EC404:</strong> Elective I <span>Specialization elective.</span></div>
+            <div class="subject"><strong>EC405:</strong> Elective II <span>Specialization elective.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Gonzalez</li>
+              <li>Prof. Nelson</li>
+              <li>Prof. Carter</li>
+              <li>Prof. Mitchell</li>
+              <li>Prof. Perez</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 8</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>EC406:</strong> Project Work <span>Major final-year project.</span></div>
+            <div class="subject"><strong>EC407:</strong> Radar and Navigation Systems <span>Radar equation, tracking, and navigation principles.</span></div>
+            <div class="subject"><strong>EC408:</strong> Elective III <span>Advanced specialization.</span></div>
+            <div class="subject"><strong>EC409:</strong> Elective IV <span>Advanced specialization.</span></div>
+            <div class="subject"><strong>EC410:</strong> Seminar <span>Technical presentation and review.</span></div>
+          </div>
+          <div class="faculty-list">
+            <h3>Core Faculty</h3>
+            <ul>
+              <li>Prof. Roberts</li>
+              <li>Prof. Phillips</li>
+              <li>Prof. Campbell</li>
+              <li>Prof. Parker</li>
+              <li>Prof. Evans</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box placement-info">
+      <h3><i class="fas fa-award"></i> Placement Information</h3>
+      <p>Our department has a strong placement record with many students placed in leading electronics, telecom, and IT companies.</p>
+      <p><i class="fas fa-dollar-sign"></i> <strong>Average Salary:</strong> $78,000</p>
+      <p><i class="fas fa-industry"></i> <strong>Top Recruiters:</strong> Qualcomm, Texas Instruments, Intel, Nokia, TCS</p>
+    </div>
+
+    <div class="content-box project-list">
+      <h3><i class="fas fa-project-diagram"></i> Sample Student Projects</h3>
+      <ul>
+        <li>Design of a 5G Communication System Prototype</li>
+        <li>Development of a Smart Home Automation System using IoT</li>
+        <li>Implementation of a Digital Image Processing Algorithm on an FPGA</li>
+        <li>Design of a Low-Power VLSI Circuit</li>
+        <li>Development of a Software-Defined Radio (SDR) Platform</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Electronics & Communication Engineering Department</p>
+  </footer>
+
+  <script>
+    // JS for Collapsible Semester Sections (Kept as is)
+    document.addEventListener('DOMContentLoaded', () => {
+      const semesterHeaders = document.querySelectorAll('.semester-header');
+
+      semesterHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          const content = header.nextElementSibling;
+          const isActive = header.classList.contains('active');
+
+          // Close all other open sections
+          document.querySelectorAll('.semester-header.active').forEach(openHeader => {
+            if (openHeader !== header) {
+              openHeader.classList.remove('active');
+              openHeader.nextElementSibling.style.display = 'none';
+            }
+          });
+
+          // Toggle the clicked section
+          if (!isActive) {
+            header.classList.add('active');
+            content.style.display = 'block';
+          } else {
+            header.classList.remove('active');
+            content.style.display = 'none';
+          }
+        });
+      });
+      
+      // Open the first semester by default
+      const firstHeader = document.querySelector('.semester-header');
+      if (firstHeader) {
+        firstHeader.click();
+      }
+    });
+  </script>
+</body>
+</html>

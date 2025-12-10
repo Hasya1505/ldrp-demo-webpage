@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanical Engineering Department - LDRP-ITR</title>
+    
+    <!-- Using Roboto for consistency and Font Awesome for icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" xintegrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --primary-color: #0077b6; /* Deep Blue/Teal (from main site) */
+            --secondary-color: #00b4d8; /* Brighter Blue */
+            --accent-color: #f77f00; /* Orange/Yellow for emphasis */
+            --text-dark: #333333;
+            --text-light: #6c757d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            color: var(--bg-light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 3rem auto;
+        }
+
+        /* --- Collapsible Semester Cards --- */
+        .semester-card {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .semester-header {
+            background-color: var(--secondary-color);
+            color: var(--bg-white);
+            padding: 20px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .semester-header:hover {
+            background-color: #008fa7;
+        }
+
+        .semester-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .semester-header i {
+            transition: transform 0.3s;
+        }
+
+        .semester-content {
+            display: none; /* Controlled by JS */
+            padding: 30px;
+        }
+
+        /* State when open */
+        .semester-header.active i {
+            transform: rotate(180deg);
+        }
+
+        /* --- Content Layout --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .subjects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .subject {
+            background-color: var(--bg-light);
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .subject:hover {
+            background-color: #e9f5f9;
+        }
+
+        .subject strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        
+        .subject span {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .faculty-list {
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .faculty-list h3 {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+
+        .faculty-list ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .faculty-list li {
+            background-color: var(--bg-white);
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+
+        /* --- Additional Content Boxes (Placement & Projects) --- */
+        .content-box {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .content-box h3 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+        
+        .placement-info {
+            background-color: #e9f5f9; /* Light blue background */
+        }
+
+        .placement-info p {
+            margin-bottom: 10px;
+        }
+
+        .project-list ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .project-list li {
+            background-color: var(--bg-light);
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-color);
+            font-weight: 500;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* --- Responsiveness --- */
+        @media (max-width: 900px) {
+            .container {
+                width: 95%;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            header p {
+                font-size: 1.2rem;
+            }
+            .semester-header h2 {
+                font-size: 1.5rem;
+            }
+            .faculty-list ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mechanical Engineering (B.E.)</h1>
+        <p>Department of Innovation, Design, and Manufacturing</p>
+    </header>
+
+    <div class="container">
+        <!-- Add Department Overview Section -->
+        <div class="content-box department-overview">
+            <h3>Department Highlights</h3>
+            <p><i class="fas fa-microchip" style="color: var(--accent-color);"></i> **Focus:** Advanced Robotics, Thermal Systems, and Sustainable Manufacturing.</p>
+            <p><i class="fas fa-chalkboard-teacher" style="color: var(--accent-color);"></i> **Accreditation:** NBA Accredited Program with strong industry partnerships.</p>
+            <p><i class="fas fa-medal" style="color: var(--accent-color);"></i> **Labs:** State-of-the-art CNC, CAD/CAM, and Fluid Mechanics Laboratories.</p>
+        </div>
+
+
+        <!-- SEMESTER CARDS (Now Collapsible) -->
+        
+        <!-- Semester 1 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 1 (First Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME101:</strong> Basic Mechanical Engineering <span>(Theory & Lab)</span></div>
+                        <div class="subject"><strong>MA101:</strong> Engineering Mathematics I <span>(Calculus & Algebra)</span></div>
+                        <div class="subject"><strong>PH101:</strong> Engineering Physics <span>(Concepts & Applications)</span></div>
+                        <div class="subject"><strong>EN101:</strong> English Communication <span>(Soft Skills & Technical Writing)</span></div>
+                        <div class="subject"><strong>CS101:</strong> Programming Fundamentals <span>(Introduction to C++)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Green</li>
+                            <li>Prof. White</li>
+                            <li>Prof. Black</li>
+                            <li>Prof. Grey</li>
+                            <li>Prof. Brown</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 2 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 2 (First Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME102:</strong> Engineering Graphics <span>(CAD Practice)</span></div>
+                        <div class="subject"><strong>MA102:</strong> Engineering Mathematics II <span>(Linear Algebra)</span></div>
+                        <div class="subject"><strong>CH101:</strong> Engineering Chemistry <span>(Materials Science)</span></div>
+                        <div class="subject"><strong>EE101:</strong> Basic Electrical Engineering <span>(Circuits & Power)</span></div>
+                        <div class="subject"><strong>EC101:</strong> Basic Electronics <span>(Semiconductors)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Red</li>
+                            <li>Prof. Blue</li>
+                            <li>Prof. Yellow</li>
+                            <li>Prof. Orange</li>
+                            <li>Prof. Purple</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 3 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 3 (Second Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME201:</strong> Thermodynamics <span>(Energy & Heat)</span></div>
+                        <div class="subject"><strong>ME202:</strong> Strength of Materials <span>(Stress & Strain Analysis)</span></div>
+                        <div class="subject"><strong>MA201:</strong> Differential Equations <span>(Advanced Math)</span></div>
+                        <div class="subject"><strong>ME203:</strong> Manufacturing Processes I <span>(Casting & Forming)</span></div>
+                        <div class="subject"><strong>ME204:</strong> Fluid Mechanics <span>(Fluid Properties & Flow)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Smith</li>
+                            <li>Prof. Johnson</li>
+                            <li>Prof. Williams</li>
+                            <li>Prof. Jones</li>
+                            <li>Prof. Davis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 4 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 4 (Second Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME205:</strong> Kinematics of Machines <span>(Motion Analysis)</span></div>
+                        <div class="subject"><strong>ME206:</strong> Dynamics of Machines <span>(Forces in Machines)</span></div>
+                        <div class="subject"><strong>ME207:</strong> Manufacturing Processes II <span>(Machining & Welding)</span></div>
+                        <div class="subject"><strong>ME208:</strong> Heat Transfer <span>(Conduction, Convection)</span></div>
+                        <div class="subject"><strong>MA202:</strong> Numerical Methods <span>(Computational Techniques)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Wilson</li>
+                            <li>Prof. Brown</li>
+                            <li>Prof. Miller</li>
+                            <li>Prof. Moore</li>
+                            <li>Prof. Taylor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 5 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 5 (Third Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME301:</strong> Design of Machine Elements I <span>(Static Loading)</span></div>
+                        <div class="subject"><strong>ME302:</strong> Internal Combustion Engines <span>(Engine Cycles)</span></div>
+                        <div class="subject"><strong>ME303:</strong> Measurement and Metrology <span>(Precision Inspection)</span></div>
+                        <div class="subject"><strong>ME304:</strong> Power Plant Engineering <span>(Energy Generation)</span></div>
+                        <div class="subject"><strong>ME305:</strong> CAD/CAM <span>(Software & Automation)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Anderson</li>
+                            <li>Prof. Thomas</li>
+                            <li>Prof. Jackson</li>
+                            <li>Prof. White</li>
+                            <li>Prof. Harris</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 6 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 6 (Third Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME306:</strong> Design of Machine Elements II <span>(Dynamic Loading)</span></div>
+                        <div class="subject"><strong>ME307:</strong> Refrigeration and Air Conditioning <span>(RAC Cycles)</span></div>
+                        <div class="subject"><strong>ME308:</strong> Automobile Engineering <span>(Vehicle Systems)</span></div>
+                        <div class="subject"><strong>ME309:</strong> Robotics <span>(Kinematics & Control)</span></div>
+                        <div class="subject"><strong>ME310:</strong> Operations Research <span>(Optimization)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Martin</li>
+                            <li>Prof. Thompson</li>
+                            <li>Prof. Garcia</li>
+                            <li>Prof. Rodriguez</li>
+                            <li>Prof. Wilson</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 7 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 7 (Final Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME401:</strong> Industrial Engineering <span>(Productivity & Layout)</span></div>
+                        <div class="subject"><strong>ME402:</strong> Finite Element Analysis <span>(FEA Software)</span></div>
+                        <div class="subject"><strong>ME403:</strong> Advanced Manufacturing <span>(Additive/Subtractive)</span></div>
+                        <div class="subject"><strong>ME404:</strong> Elective I <span>(Specialization choice)</span></div>
+                        <div class="subject"><strong>ME405:</strong> Elective II <span>(Specialization choice)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Lee</li>
+                            <li>Prof. Perez</li>
+                            <li>Prof. Gonzalez</li>
+                            <li>Prof. Rivera</li>
+                            <li>Prof. Martinez</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester 8 -->
+        <div class="semester-card">
+            <div class="semester-header">
+                <h2>Semester 8 (Final Year)</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="semester-content">
+                <div class="content-grid">
+                    <div class="subjects-list">
+                        <div class="subject"><strong>ME406:</strong> Project Work <span>(Major Thesis)</span></div>
+                        <div class="subject"><strong>ME407:</strong> Engineering Economics <span>(Cost & Finance)</span></div>
+                        <div class="subject"><strong>ME408:</strong> Elective III <span>(Advanced Topic)</span></div>
+                        <div class="subject"><strong>ME409:</strong> Elective IV <span>(Advanced Topic)</span></div>
+                        <div class="subject"><strong>ME410:</strong> Seminar <span>(Presentation & Review)</span></div>
+                    </div>
+                    <div class="faculty-list">
+                        <h3>Core Faculty</h3>
+                        <ul>
+                            <li>Prof. Lopez</li>
+                            <li>Prof. Hill</li>
+                            <li>Prof. Young</li>
+                            <li>Prof. King</li>
+                            <li>Prof. Wright</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Placement and Projects -->
+        <div class="content-box placement-info">
+            <h3><i class="fas fa-award"></i> Placement Information</h3>
+            <p>Our department has a **strong placement record** with many students placed in leading manufacturing and engineering companies.</p>
+            <p><i class="fas fa-dollar-sign"></i> **Average Salary:** $75,000</p>
+            <p><i class="fas fa-users"></i> **Top Recruiters:** Boeing, General Electric, Tata Motors, Larsen & Toubro</p>
+        </div>
+
+        <div class="content-box project-list">
+            <h3><i class="fas fa-tools"></i> Notable Student Projects</h3>
+            <ul>
+                <li>Design and Fabrication of an Automated Assembly Line</li>
+                <li>Development of a Hybrid Electric Vehicle Powertrain</li>
+                <li>Analysis and Optimization of a Wind Turbine Blade</li>
+                <li>Design of a Robotic Arm for Industrial Applications</li>
+                <li>Development of a 3D-Printed Prosthetic Limb</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Mechanical Department | LDRP-ITR</p>
+    </footer>
+
+    <script>
+        // JS for Collapsible Semester Sections
+        document.addEventListener('DOMContentLoaded', () => {
+            const semesterHeaders = document.querySelectorAll('.semester-header');
+
+            semesterHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const isActive = header.classList.contains('active');
+
+                    // Close all other open sections
+                    document.querySelectorAll('.semester-header.active').forEach(openHeader => {
+                        if (openHeader !== header) {
+                            openHeader.classList.remove('active');
+                            openHeader.nextElementSibling.style.display = 'none';
+                        }
+                    });
+
+                    // Toggle the clicked section
+                    if (!isActive) {
+                        header.classList.add('active');
+                        content.style.display = 'block';
+                    } else {
+                        header.classList.remove('active');
+                        content.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Optional: Open the first semester by default
+            const firstHeader = document.querySelector('.semester-header');
+            if (firstHeader) {
+                firstHeader.click();
+            }
+        });
+    </script>
+</body>
+</html>

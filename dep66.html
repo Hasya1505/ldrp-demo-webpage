@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Civil Engineering Department</title>
+
+  <!-- Google Font + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #0077b6;
+      --secondary: #00b4d8;
+      --accent: #f77f00;
+      --light: #f8f9fa;
+      --white: #ffffff;
+      --dark: #333333;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--primary);
+      text-align: center;
+      padding: 3rem 0;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      color: var(--accent);
+      font-size: 3rem;
+      margin: 0 0 0.5rem;
+    }
+
+    header p {
+      color: #e0f7ff;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 3rem auto;
+    }
+
+    /* Semester Cards */
+    .semester-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .semester-header {
+      background-color: var(--secondary);
+      color: var(--white);
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .semester-header:hover {
+      background-color: #0098bd;
+    }
+
+    .semester-header h2 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    .semester-header i {
+      transition: transform 0.3s;
+    }
+
+    .semester-header.active i {
+      transform: rotate(180deg);
+    }
+
+    .semester-content {
+      display: none;
+      padding: 25px 30px 30px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+
+    .subjects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subject {
+      background-color: #eef9ff;
+      padding: 12px;
+      border-left: 4px solid var(--primary);
+      border-radius: 5px;
+    }
+
+    .subject strong {
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    .faculty-list {
+      background-color: #eef9ff;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .faculty-list h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+
+    .faculty-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .faculty-list li {
+      background-color: var(--white);
+      padding: 7px 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      font-weight: 500;
+    }
+
+    /* Extra Boxes */
+    .content-box {
+      background-color: var(--white);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .content-box h3 {
+      color: var(--primary);
+      font-size: 1.9rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--secondary);
+      padding-bottom: 8px;
+    }
+
+    .placement-info {
+      background-color: #e7f7ff;
+    }
+
+    .project-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .project-list li {
+      background-color: #eef9ff;
+      margin-bottom: 8px;
+      padding: 10px;
+      border-left: 4px solid var(--accent);
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    footer {
+      background-color: var(--primary);
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--white);
+      margin-top: 3rem;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.4rem;
+      }
+
+      header p {
+        font-size: 1.1rem;
+      }
+
+      .semester-header h2 {
+        font-size: 1.3rem;
+      }
+
+      .container {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Civil Engineering (B.E.)</h1>
+    <p>Welcome to the Department of Civil Engineering</p>
+  </header>
+
+  <div class="container">
+
+    <!-- Semester 1 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 1</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE101:</strong> Engineering Mechanics</div>
+            <div class="subject"><strong>MA101:</strong> Mathematics I</div>
+            <div class="subject"><strong>PH101:</strong> Physics</div>
+            <div class="subject"><strong>EN101:</strong> English Communication</div>
+            <div class="subject"><strong>CS101:</strong> Basic Computer Programming</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Smith</li>
+              <li>Prof. Johnson</li>
+              <li>Prof. Williams</li>
+              <li>Prof. Brown</li>
+              <li>Prof. Davis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 2 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 2</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE102:</strong> Surveying</div>
+            <div class="subject"><strong>MA102:</strong> Mathematics II</div>
+            <div class="subject"><strong>CH101:</strong> Chemistry</div>
+            <div class="subject"><strong>EE101:</strong> Basic Electrical Engineering</div>
+            <div class="subject"><strong>EC101:</strong> Basic Electronics</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Miller</li>
+              <li>Prof. Wilson</li>
+              <li>Prof. Moore</li>
+              <li>Prof. Taylor</li>
+              <li>Prof. Anderson</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 3 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 3</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE201:</strong> Strength of Materials</div>
+            <div class="subject"><strong>CE202:</strong> Fluid Mechanics</div>
+            <div class="subject"><strong>CE203:</strong> Building Materials and Construction</div>
+            <div class="subject"><strong>MA201:</strong> Differential Equations</div>
+            <div class="subject"><strong>CE204:</strong> Engineering Geology</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Thomas</li>
+              <li>Prof. Jackson</li>
+              <li>Prof. White</li>
+              <li>Prof. Harris</li>
+              <li>Prof. Martin</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 4 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 4</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE205:</strong> Structural Analysis I</div>
+            <div class="subject"><strong>CE206:</strong> Soil Mechanics</div>
+            <div class="subject"><strong>CE207:</strong> Hydraulics</div>
+            <div class="subject"><strong>CE208:</strong> Transportation Engineering I</div>
+            <div class="subject"><strong>MA202:</strong> Numerical Methods</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Thompson</li>
+              <li>Prof. Clark</li>
+              <li>Prof. Lewis</li>
+              <li>Prof. Lee</li>
+              <li>Prof. Walker</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 5 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 5</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE301:</strong> Structural Analysis II</div>
+            <div class="subject"><strong>CE302:</strong> Reinforced Concrete Design I</div>
+            <div class="subject"><strong>CE303:</strong> Environmental Engineering I</div>
+            <div class="subject"><strong>CE304:</strong> Transportation Engineering II</div>
+            <div class="subject"><strong>CE305:</strong> Water Resources Engineering I</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Hall</li>
+              <li>Prof. Allen</li>
+              <li>Prof. Young</li>
+              <li>Prof. Hernandez</li>
+              <li>Prof. King</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 6 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 6</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE306:</strong> Reinforced Concrete Design II</div>
+            <div class="subject"><strong>CE307:</strong> Steel Structures Design</div>
+            <div class="subject"><strong>CE308:</strong> Environmental Engineering II</div>
+            <div class="subject"><strong>CE309:</strong> Water Resources Engineering II</div>
+            <div class="subject"><strong>CE310:</strong> Geotechnical Engineering</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Wright</li>
+              <li>Prof. Lopez</li>
+              <li>Prof. Hill</li>
+              <li>Prof. Green</li>
+              <li>Prof. Baker</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 7 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 7</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE401:</strong> Construction Management</div>
+            <div class="subject"><strong>CE402:</strong> Foundation Engineering</div>
+            <div class="subject"><strong>CE403:</strong> Prestressed Concrete</div>
+            <div class="subject"><strong>CE404:</strong> Elective I</div>
+            <div class="subject"><strong>CE405:</strong> Elective II</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Gonzalez</li>
+              <li>Prof. Nelson</li>
+              <li>Prof. Carter</li>
+              <li>Prof. Mitchell</li>
+              <li>Prof. Perez</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semester 8 -->
+    <div class="semester-card">
+      <div class="semester-header">
+        <h2>Semester 8</h2>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="semester-content">
+        <div class="content-grid">
+          <div class="subjects-list">
+            <div class="subject"><strong>CE406:</strong> Project Work</div>
+            <div class="subject"><strong>CE407:</strong> Estimation and Costing</div>
+            <div class="subject"><strong>CE408:</strong> Elective III</div>
+            <div class="subject"><strong>CE409:</strong> Elective IV</div>
+            <div class="subject"><strong>CE410:</strong> Seminar</div>
+          </div>
+          <div class="faculty-list">
+            <h3>Faculty</h3>
+            <ul>
+              <li>Prof. Roberts</li>
+              <li>Prof. Phillips</li>
+              <li>Prof. Campbell</li>
+              <li>Prof. Parker</li>
+              <li>Prof. Evans</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placement Info -->
+    <div class="content-box placement-info">
+      <h3><i class="fas fa-award"></i> Placement Information</h3>
+      <p>Our department has a strong placement record with students placed in leading construction and infrastructure companies.</p>
+      <p><strong>Average Salary:</strong> $70,000 (approx.)</p>
+      <p><strong>Top Recruiters:</strong> Larsen &amp; Toubro, Tata Projects, Shapoorji Pallonji, HCC</p>
+    </div>
+
+    <!-- Project List -->
+    <div class="content-box project-list">
+      <h3><i class="fas fa-project-diagram"></i> Project List</h3>
+      <ul>
+        <li>Design of a Multi-Story Residential Building</li>
+        <li>Planning and Design of a Highway Project</li>
+        <li>Design of a Water Treatment Plant</li>
+        <li>Analysis and Design of a Bridge</li>
+        <li>Development of a Sustainable Urban Drainage System</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2024 Civil Engineering Department
+  </footer>
+
+  <script>
+    // Collapsible semester sections
+    document.addEventListener('DOMContentLoaded', () => {
+      const headers = document.querySelectorAll('.semester-header');
+
+      headers.forEach(header => {
+        header.addEventListener('click', () => {
+          const content = header.nextElementSibling;
+          const isActive = header.classList.contains('active');
+
+          // Close others
+          document.querySelectorAll('.semester-header.active').forEach(h => {
+            if (h !== header) {
+              h.classList.remove('active');
+              h.nextElementSibling.style.display = 'none';
+            }
+          });
+
+          // Toggle current
+          if (!isActive) {
+            header.classList.add('active');
+            content.style.display = 'block';
+          } else {
+            header.classList.remove('active');
+            content.style.display = 'none';
+          }
+        });
+      });
+
+      // Open first semester by default
+      const first = document.querySelector('.semester-header');
+      if (first) first.click();
+    });
+  </script>
+
+</body>
+</html>
