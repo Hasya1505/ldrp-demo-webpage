@@ -660,4 +660,277 @@ footer {
     .student-card img {
         margin-bottom: 15px;
     }
+
+}
+/* =======================
+   RESPONSIVE STYLES
+   ======================= */
+
+/* --- Tablets & small laptops (≤ 1024px) --- */
+@media (max-width: 1024px) {
+    header {
+        padding: 12px 5%;
+    }
+
+    section {
+        padding: 60px 6%;
+    }
+
+    .department-grid,
+    .contact-grid,
+    .history-content {
+        grid-template-columns: 1fr;
+    }
+
+    .history-content {
+        flex-direction: column;
+    }
+
+    .card-list {
+        gap: 20px;
+    }
+
+    .card-item {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+}
+
+/* --- Mobile (≤ 768px) --- */
+@media (max-width: 768px) {
+
+    /* General layout */
+    section {
+        padding: 45px 5%;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    /* Header & Navbar */
+    header {
+        padding: 10px 5%;
+    }
+
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+
+    .logo img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .navmenu {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        background-color: var(--bg-white);
+        box-shadow: var(--shadow);
+        display: none;
+        flex-direction: column;
+        padding: 10px 0;
+        transition: all 0.3s ease;
+    }
+
+    .navmenu.active {
+        display: flex;
+    }
+
+    .navmenu ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .navmenu li {
+        width: 100%;
+        border-bottom: 1px solid var(--bg-light);
+        text-align: center;
+    }
+
+    .navmenu a {
+        display: block;
+        padding: 12px 0;
+        margin: 0 10%;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 1.7rem;
+    }
+
+    /* Hero section */
+    .hero-section {
+        height: auto;
+        min-height: 70vh;
+        padding: 80px 5% 60px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.1rem;
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .main-cta-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Academics / departments */
+    .department-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .dep-card {
+        padding: 20px;
+    }
+
+    .dep-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .dep-card ul {
+        gap: 10px;
+    }
+
+    .dep-card li {
+        width: 100%;
+        padding-right: 0;
+        font-size: 0.95rem;
+    }
+
+    .stats-box {
+        margin-top: 20px;
+        padding: 15px;
+    }
+
+    .stats-box h4 {
+        font-size: 2rem;
+    }
+
+    /* Cards (Campus life / services) */
+    .card-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-item {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .card-item img {
+        height: 190px;
+    }
+
+    /* About / History */
+    .history-content {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .history-text {
+        padding: 20px;
+    }
+
+    .vision-box {
+        padding: 20px;
+    }
+
+    /* Gallery */
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+    }
+
+    .gallery-item img {
+        height: 200px;
+    }
+
+    .gallery-item .desc {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    /* Contact & location */
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .contact-info-block,
+    .contact-form-block {
+        padding: 20px;
+    }
+
+    .map-container iframe {
+        height: 320px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 15px 5%;
+    }
+
+    .end-text p {
+        font-size: 0.8rem;
+    }
+}
+
+/* --- Extra small mobile (≤ 480px) --- */
+@media (max-width: 480px) {
+
+    section {
+        padding: 35px 4%;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .hero-section {
+        padding-top: 70px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .card-item img {
+        height: 170px;
+    }
+
+    .gallery-item img {
+        height: 180px;
+    }
+
+    .contact-form-block input,
+    .contact-form-block textarea {
+        font-size: 0.9rem;
+    }
+
+    .main-cta-btn {
+        width: 100%;
+        text-align: center;
+    }
 }
