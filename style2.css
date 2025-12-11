@@ -279,7 +279,6 @@ header {
 .pg-list li {
     width: 100%;
 }
-
 .stats-box {
     text-align: center;
     background: var(--secondary-color);
@@ -290,13 +289,13 @@ header {
 }
 
 .stats-box h4 {
-    font-size: 2.5rem;
+    font-size: 1.8rem; /* CHANGED: Smaller placement number */
     font-weight: 700;
     line-height: 1;
 }
 
 .stats-box p {
-    font-size: 1rem;
+    font-size: 0.8rem; /* CHANGED: Smaller descriptive text */
     text-transform: uppercase;
 }
 
@@ -883,3 +882,4 @@ footer {
         text-align: center;
     }
 }
+
