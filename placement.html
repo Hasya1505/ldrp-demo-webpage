@@ -1,518 +1,464 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Placement Trend (Enhanced UI - Vertical Reviews/Bigger Chart)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Placement Trend — Responsive & Mobile-Optimized</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
-    <style>
-        /* COLOR PALETTE & VARIABLES */
-        :root{
-            --primary-color: #2563eb; /* Blue */
-            --primary-light: #eff6ff;
-            --secondary-color: #10b981; /* Green */
-            --accent-color: #8b5cf6; /* Purple accent for MECH */
-            --text-color: #1f2937;
-            --muted-color: #6b7280;
-            --bg-color: #f5f7f9;
-            --card-color: #ffffff;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-        }
+  <style>
+    /* =========== THEME =========== */
+    :root{
+      --primary: #2563eb;
+      --primary-100: #eff6ff;
+      --accent: #8b5cf6;
+      --green: #10b981;
+      --orange: #f97316;
+      --muted: #6b7280;
+      --bg: #f5f7f9;
+      --card: #ffffff;
+      --glass: rgba(255,255,255,0.7);
+      --shadow: 0 6px 22px rgba(16,24,40,0.06);
+      --radius: 12px;
+      --gap: 14px;
+      --container: 1100px;
+    }
 
-        /* BASE STYLES */
-        html,body{height:100%}
-        body{
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(180deg, var(--bg-color) 0%, #ffffff 100%);
-            color: var(--text-color);
-            margin: 0; padding: 20px;
-            line-height: 1.6;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-        }
+    /* =========== BASE =========== */
+    html,body{height:100%}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      padding:18px;
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(180deg,var(--bg) 0%, #ffffff 100%);
+      color: #0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-touch-callout:none;
+    }
+    header{ text-align:center; margin-bottom:18px }
+    h1{ margin:0; font-size:22px; color:var(--primary); font-weight:700 }
+    .muted{ color:var(--muted); font-size:13px; margin-top:6px }
 
-        header{
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1{
-            margin: 0;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        h3{
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 0;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 10px;
-            margin-bottom: 16px;
-        }
-        .muted{
-            color: var(--muted-color);
-            font-size: 13px;
-        }
+    /* =========== LAYOUT GRID =========== */
+    .wrap{ max-width:var(--container); margin:0 auto; display:grid; gap:var(--gap);
+      grid-template-areas:
+        "top"
+        "kpis"
+        "table"
+        "chart"
+        "reviews";
+    }
 
-        /* CONTAINER/LAYOUT */
-        .container{
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            gap: 22px;
-            grid-template-areas:
-                "top-controls top-controls"
-                "table-area table-area"
-                "chart-area reviews-area";
-            grid-template-columns: 2fr 1fr; /* chart 2/3, reviews 1/3 */
-        }
+    /* small top row that becomes two-col on wide screens */
+    .top { grid-area: top; display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap }
+    .kpis { grid-area:kpis; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .kpi { background:var(--card); padding:10px 12px; border-radius:10px; box-shadow:var(--shadow); min-width:120px }
+    .kpi .num{font-weight:700; font-size:16px; color:var(--primary) }
+    .kpi .label{font-size:12px; color:var(--muted) }
 
-        /* top controls */
-        .top-controls { grid-area: top-controls; display:flex; gap:12px; align-items:center; justify-content:space-between; }
-        .controls-left, .controls-right { display:flex; gap:10px; align-items:center; }
-        .btn {
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight:600;
-            cursor:pointer;
-            box-shadow: 0 6px 18px rgba(37,99,235,0.08);
-        }
-        .btn.secondary {
-            background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-light);
-            box-shadow:none;
-        }
-        .select, .search {
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid #e6e9ee;
-            background: #fff;
-            font-size: 14px;
-        }
+    /* cards & elements */
+    .card { background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); }
+    .card.flat { box-shadow:none; border:1px solid #eef2f7 }
 
-        @media (max-width: 900px) {
-            .container {
-                grid-template-areas:
-                    "top-controls"
-                    "table-area"
-                    "chart-area"
-                    "reviews-area";
-                grid-template-columns: 1fr;
-            }
-            .top-controls {flex-direction:column; align-items:stretch;}
-        }
+    /* =========== RESPONSIVE TABLE -> cards on mobile =========== */
+    .table-wrap{ grid-area:table }
+    table{ width:100%; border-collapse:collapse; font-size:14px; }
+    thead th{ text-align:left; padding:12px; font-size:12px; color:var(--primary); background:var(--primary-100); text-transform:uppercase; font-weight:700; letter-spacing:0.6px }
+    tbody td{ padding:12px; border-bottom:1px solid #eef2f7 }
+    tbody tr:nth-child(even){ background:#fbfcfe }
+    .avg-pill { background:var(--green); color:#fff; padding:6px 8px; border-radius:6px; font-weight:700; display:inline-block }
 
-        /* CARD STYLE */
-        .card{
-            background: var(--card-color);
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-        }
+    /* card-list view (mobile) */
+    .card-list{ display:none; gap:10px; flex-direction:column }
+    .row-card{ padding:12px; border-radius:10px; border:1px solid #eef2f7; background:#fff }
+    .row-card .row-head{ display:flex; justify-content:space-between; gap:8px; align-items:center }
+    .row-card .row-body{ margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--muted) }
 
-        /* GRID AREAS */
-        #table-section { grid-area: table-area; }
-        #chart-section { grid-area: chart-area; }
-        #reviews-section { grid-area: reviews-area; }
+    /* =========== CHART + CONTROLS =========== */
+    .chart-wrap{ grid-area:chart; height:420px; display:flex; gap:12px; align-items:stretch; }
+    .chart-area{ flex:1; display:flex; flex-direction:column }
+    .chart-toolbar{ display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap }
+    .small { font-size:13px; color:var(--muted) }
 
-        /* STAT CARDS (small KPI) */
-        .stats {
-            display:flex;
-            gap:12px;
-            align-items:center;
-        }
-        .stat {
-            background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
-            border-radius:10px;
-            padding:10px 14px;
-            min-width: 120px;
-            box-shadow: 0 4px 12px rgba(15,23,42,0.04);
-        }
-        .stat .num { font-size:18px; font-weight:700; color:var(--primary-color); }
-        .stat .label { font-size:12px; color:var(--muted-color); }
+    /* reviews section */
+    .reviews{ grid-area:reviews; display:flex; gap:12px; flex-direction:column }
+    .accordion { border-radius:10px; overflow:hidden }
+    .review-item{ padding:12px; border-bottom:1px dashed #eef2f7; display:flex; flex-direction:column; background:linear-gradient(180deg,#fff,#fbfdff); }
+    .review-meta{ font-size:12px; color:var(--muted); margin-top:8px; display:flex; justify-content:space-between; align-items:center }
 
-        /* CHART SIZE */
-        .chart-wrap{
-            height: 420px;
-            width:100%;
-        }
+    /* buttons & inputs */
+    .btn{ background:var(--primary); color:#fff; padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600 }
+    .btn.secondary{ background:transparent; color:var(--primary); border:1px solid var(--primary-100); box-shadow:none }
+    .select, .search{ padding:8px 10px; border-radius:10px; border:1px solid #e6e9ee; background:var(--card) }
+    .chip{ padding:6px 8px; border-radius:8px; border:1px solid #eef2f7; background:#fff; font-weight:600 }
 
-        /* TABLE STYLES (Clean/Striped) */
-        table{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-        th, td{
-            padding: 12px 14px;
-            text-align: left;
-            border-bottom: 1px solid #eef1f4;
-        }
-        th{
-            background: var(--primary-light);
-            color: var(--primary-color);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.6px;
-        }
-        tbody tr:nth-child(even) { background-color:#fbfcfe; }
-        tbody tr:hover { background: linear-gradient(90deg, rgba(37,99,235,0.04), rgba(16,185,129,0.02)); }
+    /* utility row for mobile toggles */
+    .mobile-controls{ display:none; gap:8px; align-items:center }
 
-        .avg{
-            background: var(--secondary-color);
-            color: white;
-            font-weight: 700;
-            text-align: center;
-            border-radius: 6px;
-            font-size: 13px;
-            padding: 6px 8px;
-            display:inline-block;
-        }
-        td:last-child { text-align:center; }
+    /* =========== MEDIA QUERIES =========== */
+    @media (min-width:900px){
+      .wrap{ grid-template-columns: 1fr 420px; grid-template-areas:
+        "top top"
+        "kpis kpis"
+        "table chart"
+        "table reviews";
+      }
+      .chart-wrap{ flex-direction:column; height:420px }
+      .mobile-controls{ display:none }
+    }
 
-        /* REVIEW STYLES (Vertical Stacking is default) */
-        #reviews { max-height: 460px; overflow:auto; padding-right:6px; }
-        .review{
-            background: var(--card-color);
-            padding: 14px;
-            border: 1px solid #e8edf3;
-            border-left: 4px solid var(--secondary-color);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-style: italic;
-            position: relative;
-        }
-        .review::before {
-            content: "\201C";
-            position: absolute;
-            top: 6px;
-            left: 8px;
-            font-size: 36px;
-            color: var(--secondary-color);
-            opacity: 0.18;
-            line-height: 1;
-        }
-        .review .meta { display:block; margin-top:8px; font-size:12px; color:var(--muted-color); font-style:normal; text-align:right; }
+    @media (max-width:899px){
+      /* mobile: hide table, show card-list */
+      table{ display:none }
+      .card-list{ display:flex }
+      .chart-wrap{ height:320px }
+      .controls .chip, .controls .select{ font-size:13px }
+      .mobile-controls{ display:flex }
+    }
 
-        /* small screens adjustments */
-        @media (max-width: 600px) {
-            body { padding: 12px; }
-            h1 { font-size:22px; }
-            .chart-wrap { height: 300px; }
-            .card { padding: 12px; }
-            th, td { padding: 10px 8px; font-size:13px; }
-            .stats { flex-wrap:wrap; gap:8px;}
-            #reviews { max-height: 260px; }
-        }
+    @media (max-width:480px){
+      body{ padding:12px }
+      h1{ font-size:18px }
+      .chart-wrap{ height:260px }
+      .kpi{ min-width:110px; padding:8px }
+      .btn{ padding:8px 10px; font-size:14px }
+    }
 
-        /* accessibility focus */
-        .btn:focus, .select:focus, .search:focus { outline: 3px solid rgba(37,99,235,0.12); outline-offset:2px; }
-    </style>
+    /* focus */
+    .btn:focus, .select:focus, .search:focus { outline:3px solid rgba(37,99,235,0.12); outline-offset:2px }
+  </style>
 </head>
-
 <body>
+  <header>
+    <h1>Placement Trend — Responsive & Mobile-Optimized</h1>
+    <div class="muted">5-Year department-wise average package performance • Add, filter & export</div>
+  </header>
 
-<header>
-    <h1>Placement Trend Analysis 📊</h1>
-    <p class="muted">5-Year Department-Wise Average Package Performance</p>
-</header>
-
-<main class="container">
-
+  <main class="wrap">
     <!-- TOP CONTROLS -->
-    <div class="top-controls">
-        <div class="controls-left">
-            <div class="stats card" style="padding:10px;">
-                <div class="stat">
-                    <div class="num" id="latestAvg">—</div>
-                    <div class="label">Latest Overall Avg (LPA)</div>
-                </div>
-                <div class="stat">
-                    <div class="num" id="highestDept">—</div>
-                    <div class="label">Top Dept (Latest)</div>
-                </div>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <select id="yearFilter" class="select" title="Filter by year">
-                    <option value="all">All Years</option>
-                </select>
-                <select id="chartType" class="select" title="Chart display">
-                    <option value="lines">Lines (Dept-wise)</option>
-                    <option value="avg">Only Overall Average</option>
-                </select>
-                <button class="btn secondary" id="exportCsv">Export CSV</button>
-            </div>
-        </div>
+    <div class="top">
+      <div class="controls">
+        <div class="chip" id="data-count">5 years</div>
+        <select id="yearFilter" class="select" aria-label="Filter by year">
+          <option value="all">All years</option>
+        </select>
+        <select id="chartType" class="select" aria-label="Chart type">
+          <option value="lines">Dept lines</option>
+          <option value="avg">Overall avg only</option>
+        </select>
+        <button class="btn secondary" id="exportCsv">Export CSV</button>
+        <button class="btn secondary" id="downloadChart">Download Chart (PNG)</button>
+      </div>
 
-        <div class="controls-right">
-            <div style="display:flex; gap:8px; align-items:center;">
-                <label class="muted">Toggle Dept:</label>
-                <button class="btn" data-dept="cse">CSE</button>
-                <button class="btn" data-dept="ece" style="background:var(--primary-light); color:var(--primary-color);">ECE</button>
-                <button class="btn" data-dept="mech" style="background:var(--accent-color);">MECH</button>
-                <button class="btn" data-dept="civil" style="background:#f97316;">CIVIL</button>
-            </div>
-        </div>
+      <!-- mobile condensed controls -->
+      <div class="mobile-controls">
+        <label class="small muted">Dept</label>
+        <select id="mobileDeptToggle" class="select" aria-label="Toggle department visibility (mobile)">
+          <option value="all">All</option>
+          <option value="cse">CSE</option>
+          <option value="ece">ECE</option>
+          <option value="mech">MECH</option>
+          <option value="civil">CIVIL</option>
+        </select>
+      </div>
     </div>
 
-    <!-- TABLE SECTION -->
-    <section class="card" id="table-section" aria-labelledby="tableHeading">
-        <h3 id="tableHeading">Average Packages by Department (LPA)</h3>
-        <div id="table-area" aria-live="polite"></div>
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi card">
+        <div class="num" id="latestAvg">—</div>
+        <div class="label">Latest Overall Avg (LPA)</div>
+      </div>
+      <div class="kpi card">
+        <div class="num" id="highestDept">—</div>
+        <div class="label">Top Dept (Latest)</div>
+      </div>
+      <div class="kpi card">
+        <div class="num" id="growthYoY">—</div>
+        <div class="label">YoY Growth (Latest)</div>
+      </div>
+    </div>
+
+    <!-- TABLE (desktop) & CARD-LIST (mobile) -->
+    <section class="table-wrap card" aria-labelledby="tableHeading">
+      <h3 id="tableHeading" style="margin:0 0 10px 0">Average Packages by Department (LPA)</h3>
+
+      <div id="table-area" aria-live="polite">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th><th>CSE</th><th>ECE</th><th>MECH</th><th>CIVIL</th><th style="text-align:center">Overall</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+
+        <!-- card-list for mobile -->
+        <div class="card-list" id="cardList" style="margin-top:8px;"></div>
+      </div>
     </section>
 
-    <!-- CHART SECTION -->
-    <section class="card" id="chart-section">
-        <h3>Overall Average Package Trend</h3>
-        <div class="chart-wrap"><canvas id="avgChart" aria-label="Placement chart" role="img"></canvas></div>
+    <!-- CHART -->
+    <section class="card chart-wrap" aria-labelledby="chartHeading">
+      <div class="chart-area">
+        <div class="chart-toolbar">
+          <div class="small">Overall Average Package Trend</div>
+          <div style="display:flex; gap:8px; align-items:center">
+            <button class="btn" id="toggleCSE" data-dept="cse">CSE</button>
+            <button class="btn" id="toggleECE" data-dept="ece" style="background:var(--primary-100); color:var(--primary)">ECE</button>
+            <button class="btn" id="toggleMECH" data-dept="mech" style="background:var(--accent);">MECH</button>
+            <button class="btn" id="toggleCIV" data-dept="civil" style="background:var(--orange);">CIVIL</button>
+          </div>
+        </div>
+
+        <div style="flex:1; min-height:0;">
+          <canvas id="avgChart" role="img" aria-label="Placement chart" style="width:100%; height:100%"></canvas>
+        </div>
+      </div>
     </section>
 
-    <!-- REVIEWS SECTION -->
-    <section class="card" id="reviews-section">
-        <h3>Student Success Stories ✨</h3>
-        <div id="reviews" aria-live="polite"></div>
+    <!-- REVIEWS -->
+    <section class="reviews card" aria-labelledby="reviewsHeading">
+      <h3 id="reviewsHeading" style="margin:0 0 10px 0">Student Success Stories ✨</h3>
+      <div id="reviews" class="accordion" aria-live="polite"></div>
     </section>
+  </main>
 
-</main>
-
-<script>
-    /* CLEAN DATA (5 Years) */
+  <script>
+    /* =========== DATA =========== */
     const data = [
-        { year: 2024, cse: 14.5, ece: 11.0, mech: 7.5, civil: 6.0, review: "Amazing training sessions helped me crack multiple interviews. - Riya Sharma (CSE)", rating: 5 },
-        { year: 2023, cse: 12.0, ece: 10.5, mech: 6.8, civil: 5.5, review: "Supportive faculty guided us through tough placement rounds. - Rohan Patel (ECE)", rating: 4 },
-        { year: 2022, cse: 11.5, ece: 9.0,  mech: 6.5, civil: 5.0, review: "Mechanical labs and projects helped me get a core job. - Alice Johnson (Mech)", rating: 5 },
-        { year: 2021, cse: 10.0, ece: 8.5,  mech: 6.0, civil: 4.8, review: "Online placement process was smooth and stress-free. - Michael Brown (CSE)", rating: 4 },
-        { year: 2020, cse: 9.0,  ece: 7.5,  mech: 5.5, civil: 4.5, review: "Great support for civil engineering internships and jobs. - Priya Singh (Civil)", rating: 4 }
+      { year: 2024, cse: 14.5, ece: 11.0, mech: 7.5, civil: 6.0, review: "Amazing training sessions helped me crack multiple interviews. - Riya Sharma (CSE)", rating: 5 },
+      { year: 2023, cse: 12.0, ece: 10.5, mech: 6.8, civil: 5.5, review: "Supportive faculty guided us through tough placement rounds. - Rohan Patel (ECE)", rating: 4 },
+      { year: 2022, cse: 11.5, ece: 9.0,  mech: 6.5, civil: 5.0, review: "Mechanical labs and projects helped me get a core job. - Alice Johnson (Mech)", rating: 5 },
+      { year: 2021, cse: 10.0, ece: 8.5,  mech: 6.0, civil: 4.8, review: "Online placement process was smooth and stress-free. - Michael Brown (CSE)", rating: 4 },
+      { year: 2020, cse: 9.0,  ece: 7.5,  mech: 5.5, civil: 4.5, review: "Great support for civil engineering internships and jobs. - Priya Singh (Civil)", rating: 4 }
     ];
 
-    /* Utility: overall average for row */
-    function avg(row){
-        return Number(((row.cse + row.ece + row.mech + row.civil) / 4).toFixed(2));
-    }
+    /* =========== HELPERS =========== */
+    function avg(row){ return Number(((row.cse + row.ece + row.mech + row.civil)/4).toFixed(2)); }
+    function years() { return data.map(d=>d.year) }
+    function getLatest(){ return data[0] } // assuming sorted newest-first
 
-    /* Populate year filter */
-    function populateYearFilter(){
-        const sel = document.getElementById('yearFilter');
-        data.forEach(d=>{
-            const opt = document.createElement('option');
-            opt.value = d.year;
-            opt.textContent = d.year;
-            sel.appendChild(opt);
-        });
-    }
+    /* =========== RENDER TABLE & CARD-LIST =========== */
+    function renderTable(filter='all'){
+      const tbody = document.getElementById('tableBody');
+      const cardList = document.getElementById('cardList');
+      tbody.innerHTML = '';
+      cardList.innerHTML = '';
+      const rows = filter==='all' ? data : data.filter(r=>r.year==filter);
+      rows.forEach(r=>{
+        // table row
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.year}</td><td>${r.cse}</td><td>${r.ece}</td><td>${r.mech}</td><td>${r.civil}</td><td style="text-align:center"><span class="avg-pill">${avg(r)}</span></td>`;
+        tbody.appendChild(tr);
 
-    /* RENDER TABLE */
-    function renderTable(filterYear = 'all'){
-        const rows = filterYear === 'all' ? data : data.filter(r => r.year == filterYear);
-        let html = `
-            <table aria-describedby="tableHeading">
-                <thead>
-                    <tr>
-                        <th>Year</th>
-                        <th>CSE (LPA)</th>
-                        <th>ECE (LPA)</th>
-                        <th>MECH (LPA)</th>
-                        <th>CIVIL (LPA)</th>
-                        <th>Overall Avg (LPA)</th>
-                    </tr>
-                </thead>
-                <tbody>
+        // mobile card
+        const card = document.createElement('div');
+        card.className = 'row-card';
+        card.innerHTML = `
+          <div class="row-head"><strong>${r.year}</strong><div><span class="avg-pill">${avg(r)}</span></div></div>
+          <div class="row-body">
+            <div>CSE: <strong>${r.cse}</strong></div>
+            <div>ECE: <strong>${r.ece}</strong></div>
+            <div>MECH: <strong>${r.mech}</strong></div>
+            <div>CIVIL: <strong>${r.civil}</strong></div>
+          </div>
         `;
-        rows.forEach(r=>{
-            html += `
-                <tr>
-                    <td>${r.year}</td>
-                    <td>${r.cse}</td>
-                    <td>${r.ece}</td>
-                    <td>${r.mech}</td>
-                    <td>${r.civil}</td>
-                    <td style="text-align:center"><span class="avg">${avg(r)}</span></td>
-                </tr>
-            `;
-        });
-        html += `</tbody></table>`;
-        document.getElementById("table-area").innerHTML = html;
+        cardList.appendChild(card);
+      });
+
+      // update data-count
+      document.getElementById('data-count').textContent = rows.length + ' year' + (rows.length>1?'s':'');
     }
 
-    /* RENDER REVIEWS */
+    /* =========== RENDER REVIEWS (accordion) =========== */
     function renderReviews(){
-        const box = document.getElementById("reviews");
-        box.innerHTML = data
-            .map(r=>`<div class="review"><div class="review-text">${r.review}</div><div class="meta">Year: ${r.year} • Rating: ${'★'.repeat(r.rating)}</div></div>`)
-            .join('');
+      const box = document.getElementById('reviews');
+      box.innerHTML = '';
+      data.forEach((r,i)=>{
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        item.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:600">${r.review.split(' - ')[0]}</div>
+            <button class="btn secondary" aria-expanded="false" data-target="rev-${i}">View</button>
+          </div>
+          <div id="rev-${i}" style="display:none; margin-top:8px">
+            <div style="font-size:13px; color:var(--muted)">${r.review}</div>
+            <div class="review-meta">Year: ${r.year} <span>${'★'.repeat(r.rating)}</span></div>
+          </div>
+        `;
+        box.appendChild(item);
+      });
+
+      // attach toggles
+      box.querySelectorAll('button[data-target]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.getAttribute('data-target');
+          const panel = document.getElementById(id);
+          const open = panel.style.display === 'block';
+          panel.style.display = open ? 'none' : 'block';
+          btn.setAttribute('aria-expanded', !open);
+          btn.textContent = open ? 'View' : 'Hide';
+        });
+      });
     }
 
-    /* Prepare chart datasets (dept wise + average) */
-    function prepareDatasets(){
-        const years = data.map(d => d.year);
-        const cse = data.map(d => d.cse);
-        const ece = data.map(d => d.ece);
-        const mech = data.map(d => d.mech);
-        const civil = data.map(d => d.civil);
-        const overall = data.map(d => avg(d));
-
-        // Read CSS variables for colors
-        const css = getComputedStyle(document.documentElement);
-        const primary = css.getPropertyValue('--primary-color').trim() || '#2563eb';
-        const secondary = css.getPropertyValue('--secondary-color').trim() || '#10b981';
-        const accent = css.getPropertyValue('--accent-color').trim() || '#8b5cf6';
-
-        return {
-            labels: years,
-            datasets: [
-                { label: 'CSE', data: cse, borderColor: primary, backgroundColor: primary+'22', tension:0.35, borderWidth:2, pointRadius:4 },
-                { label: 'ECE', data: ece, borderColor: secondary, backgroundColor: secondary+'22', tension:0.35, borderWidth:2, pointRadius:4 },
-                { label: 'MECH', data: mech, borderColor: accent, backgroundColor: accent+'22', tension:0.35, borderWidth:2, pointRadius:4 },
-                { label: 'CIVIL', data: civil, borderColor: '#f97316', backgroundColor: '#f9731622', tension:0.35, borderWidth:2, pointRadius:4 },
-                { label: 'Overall Avg', data: overall, borderColor: '#0f172a', backgroundColor: '#00000014', borderDash: [6,3], tension:0.35, borderWidth:2, pointRadius:3 }
-            ]
-        };
-    }
-
+    /* =========== CHART =========== */
     let chartInstance = null;
-
-    /* RENDER CHART */
-    function renderChart(mode = 'lines', visible = {cse:true,ece:true,mech:true,civil:true}){
-        const ctx = document.getElementById('avgChart');
-
-        // destroy previous chart if exists
-        if(chartInstance) chartInstance.destroy();
-
-        const d = prepareDatasets();
-
-        // If only avg requested, filter to the overall dataset
-        const datasets = mode === 'avg' ? d.datasets.filter(ds => ds.label === 'Overall Avg') : d.datasets.filter(ds => {
-            if(ds.label === 'CSE' && !visible.cse) return false;
-            if(ds.label === 'ECE' && !visible.ece) return false;
-            if(ds.label === 'MECH' && !visible.mech) return false;
-            if(ds.label === 'CIVIL' && !visible.civil) return false;
-            return true;
-        });
-
-        chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: { labels: d.labels, datasets: datasets },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { position: 'top', labels: { usePointStyle:true, boxWidth:8 } },
-                    tooltip: { enabled: true, callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.formattedValue} LPA` } }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        title: { display:true, text:'Package (LPA)' },
-                        grid: { color: '#eef2f7' }
-                    },
-                    x: {
-                        title: { display:true, text:'Year' },
-                        grid: { display:false }
-                    }
-                }
-            }
-        });
+    function prepareDatasets(){
+      const yrs = years();
+      return {
+        labels: yrs,
+        datasets: [
+          { label:'CSE', data: data.map(d=>d.cse), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(), tension:0.35, borderWidth:2, fill:false },
+          { label:'ECE', data: data.map(d=>d.ece), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--green').trim(), tension:0.35, borderWidth:2, fill:false },
+          { label:'MECH', data: data.map(d=>d.mech), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(), tension:0.35, borderWidth:2, fill:false },
+          { label:'CIVIL', data: data.map(d=>d.civil), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--orange').trim(), tension:0.35, borderWidth:2, fill:false },
+          { label:'Overall Avg', data: data.map(d=>avg(d)), borderColor:'#0f172a', borderDash:[6,4], tension:0.35, borderWidth:2, fill:false }
+        ]
+      };
     }
 
-    /* Small helper to compute latest KPIs */
+    function renderChart(mode='lines', visible={cse:true,ece:true,mech:true,civil:true}){
+      const ctx = document.getElementById('avgChart');
+      if(chartInstance) chartInstance.destroy();
+      const all = prepareDatasets();
+      let datasets;
+      if(mode === 'avg') datasets = all.datasets.filter(ds=>ds.label==='Overall Avg');
+      else datasets = all.datasets.filter(ds => {
+        if(ds.label === 'CSE' && !visible.cse) return false;
+        if(ds.label === 'ECE' && !visible.ece) return false;
+        if(ds.label === 'MECH' && !visible.mech) return false;
+        if(ds.label === 'CIVIL' && !visible.civil) return false;
+        return true;
+      });
+
+      chartInstance = new Chart(ctx, {
+        type:'line',
+        data:{ labels: all.labels, datasets },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:'index', intersect:false},
+          plugins:{ legend:{ position:'top' }, tooltip:{ callbacks:{ label: ctx => `${ctx.dataset.label}: ${ctx.formattedValue} LPA` } } },
+          scales:{ y:{ title:{ display:true, text:'LPA' }, grid:{ color:'#eef2f7' } }, x:{ grid:{ display:false } } }
+        }
+      });
+    }
+
+    /* =========== KPI UPDATES =========== */
     function updateKpis(){
-        const latest = data[0]; // assuming data sorted with newest first
-        document.getElementById('latestAvg').textContent = avg(latest) + ' LPA';
-        const deptVals = [
-            {name:'CSE', val: latest.cse},
-            {name:'ECE', val: latest.ece},
-            {name:'MECH', val: latest.mech},
-            {name:'CIVIL', val: latest.civil}
-        ];
-        const top = deptVals.reduce((a,b) => a.val > b.val ? a : b);
-        document.getElementById('highestDept').textContent = `${top.name} (${top.val} LPA)`;
+      const latest = getLatest();
+      document.getElementById('latestAvg').textContent = avg(latest) + ' LPA';
+      const arr = [{n:'CSE',v:latest.cse},{n:'ECE',v:latest.ece},{n:'MECH',v:latest.mech},{n:'CIVIL',v:latest.civil}];
+      const top = arr.reduce((a,b)=> a.v>b.v ? a : b);
+      document.getElementById('highestDept').textContent = `${top.n} (${top.v} LPA)`;
+      // YoY growth: compare latest vs previous if exists
+      const prev = data[1] ?? null;
+      if(prev){
+        const growth = (((avg(latest)-avg(prev))/avg(prev))*100).toFixed(1);
+        document.getElementById('growthYoY').textContent = (growth >= 0 ? '+' : '') + growth + '%';
+      } else {
+        document.getElementById('growthYoY').textContent = '—';
+      }
     }
 
-    /* Export CSV */
+    /* =========== EXPORT CSV =========== */
     function exportCSV(){
-        const header = ['year','cse','ece','mech','civil','overall_avg'];
-        const rows = data.map(r => [r.year,r.cse,r.ece,r.mech,r.civil,avg(r)]);
-        const csv = [header, ...rows].map(r => r.join(',')).join('\n');
-        const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'placement_data.csv';
-        document.body.appendChild(a); a.click();
-        a.remove(); URL.revokeObjectURL(url);
+      const header = ['year','cse','ece','mech','civil','overall_avg'];
+      const rows = data.map(r => [r.year,r.cse,r.ece,r.mech,r.civil,avg(r)]);
+      const csv = [header, ...rows].map(r => r.join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'placement_data.csv';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     }
 
-    /* Toggle button logic: show/hide departments */
-    const visibleDepts = { cse:true, ece:true, mech:true, civil:true };
+    /* =========== DOWNLOAD CHART PNG =========== */
+    function downloadChartPNG(){
+      if(!chartInstance) return;
+      const url = chartInstance.toBase64Image('image/png', 1);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'placement_chart.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    }
 
-    /* INIT */
+    /* =========== INTERACTIVITY & TOGGLES =========== */
+    const visible = { cse:true, ece:true, mech:true, civil:true };
+
     document.addEventListener('DOMContentLoaded', ()=>{
-        populateYearFilter();
-        renderTable();
-        renderReviews();
-        updateKpis();
-        renderChart('lines', visibleDepts);
+      // populate year dropdown
+      const yearSel = document.getElementById('yearFilter');
+      data.forEach(d=>{
+        const opt = document.createElement('option'); opt.value = d.year; opt.textContent = d.year; yearSel.appendChild(opt);
+      });
 
-        // Fill year filter label default
-        const yearSel = document.getElementById('yearFilter');
-        yearSel.addEventListener('change', (e) => {
-            const val = e.target.value;
-            renderTable(val);
+      // initial renders
+      renderTable();
+      renderReviews();
+      updateKpis();
+      renderChart('lines', visible);
+
+      // year filter
+      yearSel.addEventListener('change', (e)=> renderTable(e.target.value) );
+
+      // chart type select
+      document.getElementById('chartType').addEventListener('change', (e)=> renderChart(e.target.value, visible) );
+
+      // export CSV
+      document.getElementById('exportCsv').addEventListener('click', exportCSV);
+
+      // download chart
+      document.getElementById('downloadChart').addEventListener('click', downloadChartPNG);
+
+      // department toggle buttons (desktop)
+      ['toggleCSE','toggleECE','toggleMECH','toggleCIV'].forEach(id=>{
+        const btn = document.getElementById(id);
+        if(!btn) return;
+        btn.addEventListener('click', ()=>{
+          const dept = btn.getAttribute('data-dept');
+          visible[dept] = !visible[dept];
+          btn.style.opacity = visible[dept] ? '1' : '0.45';
+          renderChart(document.getElementById('chartType').value, visible);
         });
+      });
 
-        document.getElementById('chartType').addEventListener('change', (e)=>{
-            const mode = e.target.value;
-            renderChart(mode, visibleDepts);
-        });
+      // mobile dept select
+      document.getElementById('mobileDeptToggle').addEventListener('change', (e)=>{
+        const val = e.target.value;
+        // reset all
+        Object.keys(visible).forEach(k=> visible[k] = false);
+        if(val === 'all'){ Object.keys(visible).forEach(k=> visible[k] = true) }
+        else visible[val] = true;
+        renderChart(document.getElementById('chartType').value, visible);
+      });
 
-        // toggle dept buttons
-        document.querySelectorAll('button[data-dept]').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-                const dept = btn.getAttribute('data-dept');
-                visibleDepts[dept] = !visibleDepts[dept];
-                // visual feedback
-                if(visibleDepts[dept]) {
-                    btn.style.opacity = '1';
-                    btn.style.transform = 'scale(1)';
-                    btn.style.boxShadow = '0 6px 18px rgba(37,99,235,0.08)';
-                } else {
-                    btn.style.opacity = '0.45';
-                    btn.style.transform = 'scale(0.98)';
-                    btn.style.boxShadow = 'none';
-                }
-                // Re-render chart (respect current chartType)
-                const mode = document.getElementById('chartType').value;
-                renderChart(mode, visibleDepts);
-            });
-        });
+      // keyboard accessibility: 'a' toggles avg-only
+      window.addEventListener('keydown', (ev)=> {
+        if(ev.key === 'a'){
+          const sel = document.getElementById('chartType');
+          sel.value = sel.value === 'avg' ? 'lines' : 'avg';
+          renderChart(sel.value, visible);
+        }
+      });
 
-        document.getElementById('exportCsv').addEventListener('click', exportCSV);
-
-        // quick keyboard accessibility: press 'a' to toggle avg-only
-        window.addEventListener('keydown', (ev)=>{
-            if(ev.key === 'a') {
-                const sel = document.getElementById('chartType');
-                sel.value = sel.value === 'avg' ? 'lines' : 'avg';
-                renderChart(sel.value, visibleDepts);
-            }
-        });
+      // responsive: re-render chart on orientation/resize to keep size correct
+      let rt;
+      window.addEventListener('resize', ()=> {
+        clearTimeout(rt);
+        rt = setTimeout(()=> {
+          if(chartInstance) chartInstance.resize();
+        }, 120);
+      });
     });
-</script>
 
+  </script>
 </body>
 </html>
