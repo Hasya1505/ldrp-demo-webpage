@@ -289,13 +289,13 @@ header {
 }
 
 .stats-box h4 {
-    font-size: 1.8rem; /* CHANGED: Smaller placement number */
+    font-size: 1.2rem; /* CHANGED: Smaller placement number */
     font-weight: 700;
     line-height: 1;
 }
 
 .stats-box p {
-    font-size: 0.8rem; /* CHANGED: Smaller descriptive text */
+    font-size: 0.6rem; /* CHANGED: Smaller descriptive text */
     text-transform: uppercase;
 }
 
@@ -882,4 +882,5 @@ footer {
         text-align: center;
     }
 }
+
 
