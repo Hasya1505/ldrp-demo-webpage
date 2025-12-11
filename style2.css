@@ -1,14 +1,15 @@
 /*
- * 🌟 REBUILT CSS - Professional Green/Gold Theme 🌟
- * Original structure maintained with updated color scheme and cleanup.
+ * 🌟 REBUILT CSS - Sky Blue/Soft Orange Theme 🌟
+ * Color scheme updated to a lighter, refreshing palette.
+ * Hero section adjusted for full image visibility on all devices.
  *
  * New Color Palette:
- * --primary-color: #007f5f (Deep Forest Green)
- * --secondary-color: #4a917e (Muted Teal/Green)
- * --accent-color: #fca311 (Vibrant Gold/Mustard)
- * --text-dark: #212529 (Near Black)
- * --text-light: #495057 (Dark Gray)
- * --bg-light: #f4f6f8 (Lightest Gray/Off-White)
+ * --primary-color: #034f84 (Deep Sky Blue/Navy)
+ * --secondary-color: #4381c1 (Lighter Sky Blue)
+ * --accent-color: #ff9900 (Soft Orange/Gold for emphasis)
+ * --text-dark: #2c3e50 (Dark Blue-Gray)
+ * --text-light: #7f8c8d (Medium Gray)
+ * --bg-light: #ecf0f1 (Very Light Gray/Off-White)
  * --bg-white: #ffffff
  */
 
@@ -24,15 +25,15 @@
 }
 
 :root {
-    /* Primary brand colors */
-    --primary-color: #007f5f; /* Deep Forest Green */
-    --secondary-color: #4a917e; /* Muted Teal/Green */
-    --accent-color: #fca311; /* Vibrant Gold/Mustard for emphasis */
+    /* Primary brand colors (Sky Blue Theme) */
+    --primary-color: #034f84; /* Deep Sky Blue/Navy */
+    --secondary-color: #4381c1; /* Lighter Sky Blue */
+    --accent-color: #ff9900; /* Soft Orange/Gold for emphasis */
 
     /* Text & Backgrounds */
-    --text-dark: #212529; /* Near Black */
-    --text-light: #495057; /* Dark Gray */
-    --bg-light: #f4f6f8; /* Lightest Gray/Off-White */
+    --text-dark: #2c3e50; /* Dark Blue-Gray */
+    --text-light: #7f8c8d; /* Medium Gray */
+    --bg-light: #ecf0f1; /* Very Light Gray/Off-White */
     --bg-white: #ffffff;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -44,7 +45,7 @@ body {
 
 section {
     padding: 80px 10%;
-    margin-bottom: 0; /* Ensures sections abut cleanly */
+    margin-bottom: 0;
 }
 
 /* --- Typography & Elements --- */
@@ -73,7 +74,7 @@ section {
 }
 
 .main-cta-btn:hover {
-    background-color: #e59200; /* Darker Gold */
+    background-color: #e58700; /* Darker Orange */
     box-shadow: var(--shadow);
 }
 
@@ -86,7 +87,7 @@ section {
 }
 
 .secondary-btn:hover {
-    background-color: #006048; /* Darker Green */
+    background-color: #023a63; /* Darker Navy */
 }
 
 /* --- 1. HEADER & NAVIGATION --- */
@@ -147,78 +148,71 @@ header {
 }
 
 .cta-btn-nav:hover {
-    background-color: #79ac9e; /* Lighter Secondary */
+    background-color: #6a9bd6; /* Lighter Secondary */
 }
 
 .menu-toggle {
     font-size: 1.8rem;
     cursor: pointer;
-    display: none; /* Hide on desktop */
+    display: none;
 }
 
 /* --- 2. HERO SECTION --- */
 .hero-section {
+    position: relative;
     padding: 0;
     height: 80vh;
-    background-image: url('bgimg.jpeg');
-    background-size: cover;
-    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    position: relative;
-    overflow: hidden; /* Added for clean overlay handling */
-    background-color: #000; /* fallback */
+    overflow: hidden;
+    /* Removed background-image from .hero-section to fully control it with overlay */
+    background-color: var(--primary-color); /* Fallback color */
 }
 
-/* Updated overlay for better visual effect and color blending */
+/* Adjusted overlay to show image clearly with minimal blur for 'full image' request */
 .bgimg-overlay {
     position: absolute;
     inset: 0;
-    background-image: inherit; /* Inherit the image from .hero-section */
+    background-image: url('bgimg.jpeg'); /* Image source */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    filter: blur(14px) grayscale(50%); /* Added grayscale for warm tone */
-    transform: scale(1.04);
+    background-attachment: scroll;
+    filter: blur(2px) brightness(0.6); /* Minimal blur, darker filter for text readability */
+    transform: scale(1.0); /* No scale, showing full image/background area */
     z-index: 0;
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
-    padding: 28px;
+    padding: 30px;
     width: 100%;
     max-width: 1100px;
     box-sizing: border-box;
-    /* Added subtle dark overlay to ensure text is readable */
-    background-color: rgba(33, 37, 41, 0.4); 
+    /* Transparent background to focus on text */
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
 .hero-content h1 {
     font-size: 3.5rem;
-    color: var(--accent-color); /* Used Gold for highlight */
+    color: var(--accent-color);
     line-height: 1.2;
     margin-bottom: 20px;
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Added text shadow for visibility against image */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); 
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8); /* Stronger shadow for image contrast */
 }
 
 .hero-content p {
     font-size: 1.8rem;
-    color: var(--bg-white); /* White text for contrast */
+    color: var(--bg-white);
     margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
+
 
 /* --- 3. ACADEMICS SECTION --- */
 .academics-section {
@@ -426,17 +420,16 @@ header {
 /* --- Dashboard / Custom Styles (Keeping original 'Inter' font reference) --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 body {
-    font-family: 'Inter', sans-serif; /* Using Inter font */
-    background-color: #f7f9fb; /* Slightly updated light background */
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f9fb;
 }
-/* Removed duplicate body rule, kept font-family/bg-color update */
 
 /* Custom Scrollbar for better aesthetics */
 .data-table-container::-webkit-scrollbar {
     height: 8px;
 }
 .data-table-container::-webkit-scrollbar-thumb {
-    background-color: #a7f3d0; /* Soft Green color */
+    background-color: #a7d9f3; /* Light Sky Blue color */
     border-radius: 10px;
 }
 
@@ -545,7 +538,7 @@ body {
 
 .contact-form-block input:focus, .contact-form-block textarea:focus {
     border-color: var(--secondary-color);
-    box-shadow: 0 0 5px rgba(74, 145, 126, 0.5); /* Secondary color shadow */
+    box-shadow: 0 0 5px rgba(67, 129, 193, 0.5); /* Secondary color shadow */
     outline: none;
 }
 
@@ -593,7 +586,7 @@ footer {
     text-align: center;
     background-color: var(--bg-light);
     border: 1px solid #ddd;
-    display: none; /* Hidden by default, shown by JavaScript */
+    display: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     font-size: 1rem;
 }
@@ -723,7 +716,8 @@ footer {
     }
 
     .bgimg-overlay {
-        filter: blur(6px) grayscale(50%); /* Adjusted blur and kept grayscale */
+        /* On mobile, ensure the image is prominent, slightly less blur */
+        filter: blur(1px) brightness(0.65);
         transform: none;
         background-position: center top;
         background-attachment: scroll;
