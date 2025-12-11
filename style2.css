@@ -935,3 +935,75 @@ footer {
     }
 }
 
+/* HERO: improved responsive background handling */
+.hero-section {
+    position: relative;
+    padding: 0;
+    height: 80vh; /* keep same height on desktop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden; /* avoid overflow from scaled overlay */
+    background-color: #000; /* fallback color while image loads */
+}
+
+/* Use an absolutely positioned overlay for the background image.
+   This gives control over sizing/blur without affecting hero content. */
+.bgimg-overlay {
+    position: absolute;
+    inset: 0;                      /* top:0; right:0; bottom:0; left:0; */
+    background-image: url('bgimg.jpeg');
+    background-size: cover;        /* cover keeps aspect ratio and fills container */
+    background-position: center;   /* center the focal point */
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* ensure mobile doesn't try fixed behavior */
+    filter: blur(18px);            /* subtle blur on desktop */
+    transform: scale(1.05);        /* slight scale to avoid edges showing */
+    will-change: transform, filter;
+    z-index: 0;                    /* behind hero content */
+}
+
+/* Content container should sit above the overlay */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 28px;
+    width: 100%;
+    max-width: 1100px;
+    box-sizing: border-box;
+}
+
+/* Make sure text color/contrast remains readable */
+.hero-content h1,
+.hero-content p {
+    color: #fff;
+}
+
+/* ===== Mobile adjustments ===== */
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;            /* allow height to grow if content wraps */
+        min-height: 60vh;       /* a comfortable minimum */
+        padding: 60px 5% 40px;
+    }
+    /* reduce blur & remove scale on mobile to avoid huge image zoom */
+    .bgimg-overlay {
+        filter: blur(6px);       /* lighter blur */
+        transform: none;         /* do not scale on small screens */
+        background-position: center top; /* show top of image on narrow screens */
+        background-size: cover;  /* still cover but without transform */
+        background-attachment: scroll; /* ensure consistent mobile behavior */
+    }
+
+    /* Optionally reduce hero text size for mobile */
+    .hero-content h1 { font-size: 2.1rem; line-height: 1.15; }
+    .hero-content p  { font-size: 1rem; }
+}
+
+/* Extra small screens: avoid too short hero area */
+@media (max-width: 480px) {
+    .hero-section { min-height: 50vh; padding-top: 56px; padding-bottom: 36px; }
+    .bgimg-overlay { filter: blur(4px); }
+}
+
